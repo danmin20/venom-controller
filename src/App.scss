@@ -15,10 +15,6 @@ html {
 html,
 body {
     overflow: hidden;
-}
-
-// Center & dribbble
-body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -26,18 +22,6 @@ body {
     flex-direction: column;
     font-family: 'Source Sans Pro', Arial;
     background: #1c1f29;
-
-    .dribbble {
-        position: fixed;
-        display: block;
-        right: 20px;
-        bottom: 20px;
-
-        img {
-            display: block;
-            height: 28px;
-        }
-    }
 }
 
 #blob {
@@ -158,4 +142,3 @@ body {
         top: -7px;
     }
 }
-
