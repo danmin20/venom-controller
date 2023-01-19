@@ -13,7 +13,7 @@ html {
 }
 
 html,
-body {
+.app {
     overflow: hidden;
     min-height: 100vh;
     display: flex;
@@ -28,7 +28,6 @@ body {
     position: relative;
 
     canvas {
-        width: 1000px;
         margin-top: -7%;
 
         @media(max-width: 1200px) {

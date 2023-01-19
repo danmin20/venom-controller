@@ -2,15 +2,19 @@ import * as THREE from "three";
 import { createNoise3D } from "simplex-noise";
 import { useRecoilValue } from "recoil";
 import { processState, speedState, spikeState } from "../atoms/slider-atom";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 const Blob = () => {
   const speedValue = useRecoilValue(speedState);
   const spikeValue = useRecoilValue(spikeState);
   const processValue = useRecoilValue(processState);
 
+  const canvasRef = useRef(null);
+  const requestAnimationRef = useRef(0);
+  const noise3D = createNoise3D();
+
   useEffect(() => {
-    const canvas = document.getElementById("blob-canvas") as HTMLCanvasElement;
+    const canvas = canvasRef.current as unknown as HTMLCanvasElement;
 
     const renderer = new THREE.WebGLRenderer({
       canvas: canvas,
@@ -19,9 +23,7 @@ const Blob = () => {
       alpha: true,
     });
 
-    const noise3D = createNoise3D();
-
-    renderer.setSize(canvas.width, canvas.height);
+    renderer.setSize(600, 600);
     renderer.setPixelRatio(window.devicePixelRatio || 1);
 
     const scene = new THREE.Scene();
@@ -40,6 +42,7 @@ const Blob = () => {
       color: 0xe4ecfa,
       shininess: 100,
     });
+
     const sphere = new THREE.Mesh(geometry, material);
 
     const lightTop = new THREE.DirectionalLight(0xffffff, 0.7);
@@ -59,14 +62,19 @@ const Blob = () => {
 
     const update = () => {
       const time =
-          performance.now() * 0.00001 * speedValue * Math.pow(processValue, 3),
-        spikes = spikeValue * processValue;
+        performance.now() * 0.00001 * speedValue * Math.pow(processValue, 3);
+      const spikes = spikeValue * processValue;
 
-      const position = sphere.geometry.attributes.position;
-      const vector = new THREE.Vector3();
+      const positions = sphere.geometry.attributes.position
+        .array as Array<number>;
 
-      for (let i = 0; i < position.count; i++) {
-        vector.fromBufferAttribute(position, i);
+      for (let i = 0; i < positions.length; i += 3) {
+        const vector = new THREE.Vector3(
+          positions[i],
+          positions[i + 1],
+          positions[i + 2]
+        );
+
         vector
           .normalize()
           .multiplyScalar(
@@ -78,23 +86,31 @@ const Blob = () => {
                   vector.z * spikes + time
                 )
           );
+
+        positions[i] = vector.x;
+        positions[i + 1] = vector.y;
+        positions[i + 2] = vector.z;
       }
 
       sphere.geometry.computeVertexNormals();
-      position.needsUpdate = true;
+      sphere.geometry.attributes.position.needsUpdate = true;
     };
 
     const animate = () => {
       update();
       renderer.render(scene, camera);
-      requestAnimationFrame(animate);
+      requestAnimationRef.current = requestAnimationFrame(animate);
     };
-    requestAnimationFrame(animate);
+    requestAnimationRef.current = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(requestAnimationRef.current);
+    };
   }, [speedValue, spikeValue, processValue]);
 
   return (
     <div id="blob">
-      <canvas id="blob-canvas" />
+      <canvas id="blob-canvas" ref={canvasRef} />
     </div>
   );
 };

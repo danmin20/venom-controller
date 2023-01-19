@@ -4,10 +4,10 @@ import Controller from "./components/Controller";
 
 const App = () => {
   return (
-    <>
+    <div className="app">
       <Blob />
       <Controller />
-    </>
+    </div>
   );
 };
 
