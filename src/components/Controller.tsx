@@ -1,6 +1,8 @@
 import { EuiRange } from "@elastic/eui";
 import { useRecoilState } from "recoil";
 import { processState, speedState, spikeState } from "../atoms/slider-atom";
+import ControlSlider from "./Slider";
+import styled from "@emotion/styled";
 
 const Controller = () => {
   const [speedValue, setSpeedValue] = useRecoilState(speedState);
@@ -8,45 +10,61 @@ const Controller = () => {
   const [processValue, setProcessValue] = useRecoilState(processState);
 
   return (
-    <div className="controls">
+    <Wrapper>
       <div>
-        <label>Speed</label>
-        <EuiRange
+        <Label>Speed</Label>
+        <ControlSlider
+          value={speedValue}
           min={10}
           max={120}
           step={1}
-          value={speedValue}
-          onChange={(e) => setSpeedValue(Number(e.currentTarget.value))}
-          showLabels
-          showValue
+          onChange={setSpeedValue}
         />
       </div>
       <div>
-        <label>Spikes</label>
-        <EuiRange
+        <Label>Spikes</Label>
+        <ControlSlider
+          value={spikeValue}
           min={0.05}
           max={2}
           step={0.05}
-          value={spikeValue}
-          onChange={(e) => setSpikeValue(Number(e.currentTarget.value))}
-          showLabels
-          showValue
+          onChange={setSpikeValue}
         />
       </div>
       <div>
-        <label>Processing</label>
-        <EuiRange
+        <Label>Processing</Label>
+        <ControlSlider
+          value={processValue}
           min={0.6}
           max={2.4}
           step={0.01}
-          value={processValue}
-          onChange={(e) => setProcessValue(Number(e.currentTarget.value))}
-          showLabels
-          showValue
+          onChange={setProcessValue}
         />
       </div>
-    </div>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  display: flex;
+  gap: 20px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+`;
+
+const Label = styled.label`
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+  display: block;
+  margin-bottom: 16px;
+
+  @media (max-width: 600px) {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+`;
 
 export default Controller;
