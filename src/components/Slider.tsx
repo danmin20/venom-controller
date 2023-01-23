@@ -29,17 +29,16 @@ const ControlSlider = ({ value, onChange, min, max, step }: Props) => {
         min={min}
         max={max}
         step={step}
-        colorScheme="teal"
         onChange={onChange}
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
       >
         <SliderTrack>
-          <SliderFilledTrack />
+          <SliderFilledTrack bg="#88b3ff" />
         </SliderTrack>
         <Tooltip
           hasArrow
-          bg="teal.500"
+          bg="#88b3ff"
           color="white"
           placement="top"
           isOpen={showTooltip}

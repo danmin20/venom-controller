@@ -1,4 +1,3 @@
-import { EuiRange } from "@elastic/eui";
 import { useRecoilState } from "recoil";
 import { processState, speedState, spikeState } from "../atoms/slider-atom";
 import ControlSlider from "./Slider";
