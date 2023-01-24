@@ -1,24 +1,16 @@
 import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { processState, speedState, spikeState } from "../atoms/slider-atom";
 import { Mesh } from "three";
 import { createNoise3D } from "simplex-noise";
 
 type Props = {
-  canvasRef: any;
-  sceneRef: any;
-  cameraRef: any;
-  requestAnimationRef: any;
+  canvasRef: React.RefObject<HTMLCanvasElement>;
 };
 
-const MeshComponent = ({
-  canvasRef,
-  sceneRef,
-  cameraRef,
-  requestAnimationRef,
-}: Props) => {
+const MeshComponent = ({ canvasRef }: Props) => {
   const ref = useRef<Mesh>(null);
   const noise3D = createNoise3D();
 
@@ -28,15 +20,17 @@ const MeshComponent = ({
 
   const canvas = canvasRef.current as unknown as HTMLCanvasElement;
 
+  const { scene, camera } = useThree();
+
   useFrame(() => {
     const renderer = new THREE.WebGLRenderer({
       canvas: canvas,
-      context: canvas?.getContext("webgl2") || undefined,
+      context: canvas.getContext("webgl2") || undefined,
       antialias: true,
       alpha: true,
     });
 
-    renderer.render(sceneRef.current, cameraRef.current);
+    renderer.render(scene, camera);
 
     renderer.setSize(600, 600);
     renderer.setPixelRatio(window.devicePixelRatio || 1);
@@ -74,15 +68,13 @@ const MeshComponent = ({
 
     ref.current?.geometry.computeVertexNormals();
 
-    if (sceneRef.current && cameraRef.current) {
-      renderer.render(sceneRef.current, cameraRef.current);
-    }
+    renderer.render(scene, camera);
   });
 
   return (
     <mesh ref={ref}>
       <sphereGeometry args={[0.8, 128, 128]} />
-      <meshPhongMaterial color="#e4ecfa" shininess={100} />
+      <meshPhongMaterial color="#e4ecfa" shininess={500} />
     </mesh>
   );
 };

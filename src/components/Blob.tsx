@@ -1,26 +1,21 @@
 import { useRef } from "react";
 import { Canvas } from "@react-three/fiber";
-import { PerspectiveCamera, Scene } from "three";
 import MeshComponent from "./Mesh";
 
 const Blob = () => {
-  const sceneRef = useRef<Scene>(null);
-  const cameraRef = useRef<PerspectiveCamera>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const requestAnimationRef = useRef(0);
 
   return (
     <div id="blob">
-      <Canvas id="blob-canvas" ref={canvasRef}>
+      <Canvas ref={canvasRef}>
         <perspectiveCamera
-          ref={cameraRef}
           fov={45}
           aspect={1}
           near={0.1}
           far={1000}
           position={[0, 0, 5]}
         />
-        <scene ref={sceneRef}>
+        <scene>
           <directionalLight
             color="#fff"
             intensity={0.7}
@@ -33,11 +28,9 @@ const Blob = () => {
             castShadow={true}
             position={[0, -500, 400]}
           />
-          <ambientLight color="#798296" />
+          <ambientLight color="#bfbfbf" />
 
-          <MeshComponent
-            {...{ canvasRef, sceneRef, cameraRef, requestAnimationRef }}
-          />
+          <MeshComponent {...{ canvasRef }} />
         </scene>
       </Canvas>
     </div>

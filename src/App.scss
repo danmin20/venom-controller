@@ -28,15 +28,8 @@ html,
     position: relative;
 
     canvas {
-        margin-top: -7%;
-
         @media(max-width: 1200px) {
             margin-top: -10%;
-            width: 800px
-        }
-
-        @media(max-width: 600px) {
-            width: 800px
         }
     }
 }
