@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { processState, speedState, spikeState } from "../atoms/slider-atom";
-import ControlSlider from "./Slider";
+import ControlSlider from "./ControlSlider";
 import styled from "@emotion/styled";
 
 const Controller = () => {

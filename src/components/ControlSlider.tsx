@@ -34,11 +34,11 @@ const ControlSlider = ({ value, onChange, min, max, step }: Props) => {
         onMouseLeave={() => setShowTooltip(false)}
       >
         <SliderTrack>
-          <SliderFilledTrack bg="#88b3ff" />
+          <SliderFilledTrack bg="#707070" />
         </SliderTrack>
         <Tooltip
           hasArrow
-          bg="#88b3ff"
+          bg="#707070"
           color="white"
           placement="top"
           isOpen={showTooltip}

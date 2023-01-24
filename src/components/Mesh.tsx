@@ -74,7 +74,7 @@ const MeshComponent = ({ canvasRef }: Props) => {
   return (
     <mesh ref={ref}>
       <sphereGeometry args={[0.8, 128, 128]} />
-      <meshPhongMaterial color="#e4ecfa" shininess={500} />
+      <meshPhongMaterial color="#707070" shininess={700} />
     </mesh>
   );
 };
